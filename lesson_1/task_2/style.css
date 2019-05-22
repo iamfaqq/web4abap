@@ -1,0 +1,26 @@
+.one {
+    position: absolute;
+    background: orange;
+    top: 0%;
+    left: 0%;
+    height:50%;
+    width: 50%; 
+}
+
+.two {
+    position: absolute;
+    bottom: 0%;
+    right: 0%;
+    background: blue;
+    height:50%;
+    width: 50%;
+}
+
+.three{
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    background: green;
+    height:50%;
+    width: 50%;
+}
