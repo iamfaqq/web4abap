@@ -1,0 +1,98 @@
+html, body{
+    font-family: Arial;
+    margin: 0;
+    height: 100%;
+}
+.container{
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    flex-wrap: wrap;
+}
+.item {
+    padding: 3rem;
+    border: 3px solid;
+    margin: 6px;
+  }
+.red{
+    flex: 30%;
+    background: red;
+    height: 1%;
+}
+.orange{
+    flex: 50%;
+    background: orange;
+    height: 1%;
+}
+.green{
+    flex: 100%;
+    background: green;
+    height: 40%;
+    margin-top: 1%;
+
+}
+.brown{
+    flex: 25%;
+    background: brown;
+    height: 10%;
+}
+.blue{
+    flex: 25%;
+    background: blue;
+    height: 10%;
+}
+.purple{
+    flex: 25%;
+    background: purple;
+    height: 10%;
+}
+@media (min-width: 320px) and (max-width: 767px) {
+    .brown, .blue, .orange{
+        display: none;
+    }
+    .green{
+        order: 1;
+        height: 2%;
+    }
+    .purple{
+        margin-top: 3%;
+        margin-bottom: 0.5px; 
+        order: 2;
+        height: 2%;
+    }
+    .red{
+        margin-top: 0.5px;
+        order:3;
+        height: 30%;
+    }
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+    .brown{
+        display: none;
+    }
+    .orange{
+        order: 1;
+        flex: 10%;
+    }
+    .purple{
+        order: 2;
+        flex: 30%;
+        height: 1%;
+    }
+    .red{
+        order: 3;
+        height: 40%;
+        flex:100%;
+    }
+    .green{
+        order: 4;
+        flex:30%;
+        height: 20%;
+    }
+    .blue{
+        order: 5;
+        flex: 30%;
+        height: 20%;
+    }
+
+}
