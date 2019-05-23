@@ -1,0 +1,44 @@
+html, body {  
+    margin: 0%;
+    height: 100%;
+    background: #f7f7f7;
+    overflow-y: hidden;
+    } 
+header {
+    margin-left:  5%;
+    margin-right: 5%;
+    border: solid;
+    width: 90%;
+    height: 15%;
+    position: relative;
+    top: 0%;
+    }
+.content {
+    margin-left:  5%;
+    margin-right: 5%;
+    height: 70%;
+    border: solid;
+    width: 60%;
+    }
+    .widget {
+    position: absolute;
+    top:15.5%;
+    right: 4.6%;
+    width: 29.5%;
+    height: 70.5%;
+    background: white;
+    border: solid;
+    }
+footer {
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    height: 15%;
+    border: solid;
+    }
+@media (max-width: 768px) {
+
+    }
+@media (max-width: 480px) {
+            
+    }
