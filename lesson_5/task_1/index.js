@@ -1,6 +1,7 @@
 /************ ACTION READ *************/
 
 let objList;
+let object;
 
 fetchin('', 'read');
 
@@ -63,15 +64,16 @@ confirmButton.addEventListener('click', del => fetchin('', 'delete'));
 
 /************ FUNCTION *************/
 
+// GET DATA FROM SERVER
 function fetchin(data, action) {
   let url = 'http://195.50.2.67:2403/a-khabibulin';
   let method = 'POST';
 
   // MAKE URL WHEN UPDATE OR DELETE
   if (action == 'update') {
-    url = url.concat('http://195.50.2.67:2403/a-khabibulin' + '/' + updSelect.selectedOptions[0].value);
+    url = url.concat('/' + updSelect.selectedOptions[0].value);
   } else if (action == 'delete') {
-    url = url.concat('http://195.50.2.67:2403/a-khabibulin' + '/' + delSelect.selectedOptions[0].value);
+    url = url.concat('/' + delSelect.selectedOptions[0].value);
     method = 'DELETE'
   };
   // GETTING DATA, WHEN READ WITHOUT BODY
@@ -85,9 +87,8 @@ function fetchin(data, action) {
       body: data
     })
       .then(res => res.json())
-      .then(res => objList = res)
-      .then(res => render(res))
       .then(res => console.log(res))
+      .then(res => object = res)
       .catch(error => console.error(error));
   } else {
     fetch('http://195.50.2.67:2403/a-khabibulin')
@@ -120,6 +121,7 @@ function render(data) {
   const divContainer = document.getElementById("showData");
   divContainer.innerHTML = "";
   divContainer.appendChild(table);
+  return data;
 };
 
 // LOAD OBJECT TO SELECT OPTION
