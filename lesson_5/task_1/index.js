@@ -1,7 +1,8 @@
 /************ ACTION READ *************/
 
 let objList;
-render();
+
+fetchin('', 'read');
 
 /************ ACTION CREATE *************/
 
@@ -58,32 +59,67 @@ const delButton = document.getElementById('deleteButton');
 const confirmButton = document.getElementById('confirmDelete');
 
 delButton.addEventListener('click', del => loadObject(delSelect));
-confirmButton.addEventListener('click', del => fetchin('', 'delete')); 
+confirmButton.addEventListener('click', del => fetchin('', 'delete'));
 
 /************ FUNCTION *************/
 
 function fetchin(data, action) {
-  let url = '';
+  let url = 'http://195.50.2.67:2403/a-khabibulin';
   let method = 'POST';
-  if (action == 'create') {
-    url = 'http://195.50.2.67:2403/a-khabibulin';  
-  } else if (action == 'update') {
+
+  // MAKE URL WHEN UPDATE OR DELETE
+  if (action == 'update') {
     url = url.concat('http://195.50.2.67:2403/a-khabibulin' + '/' + updSelect.selectedOptions[0].value);
-  } else if(action == 'delete'){
+  } else if (action == 'delete') {
     url = url.concat('http://195.50.2.67:2403/a-khabibulin' + '/' + delSelect.selectedOptions[0].value);
     method = 'DELETE'
   };
-  fetch(url, {
-    method: method, // PUT not work
-    headers: {
-      'Accept': 'application/json, text/plain, */*',
-      'Content-Type': 'application/json'
-    },
-    body: data
-  })
-    .then(res => res.json())
-    .then(res => console.log(res))
-    .then(render());
+  // GETTING DATA, WHEN READ WITHOUT BODY
+  if (action !== 'read') {
+    fetch(url, {
+      method: method, // PUT not work
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json'
+      },
+      body: data
+    })
+      .then(res => res.json())
+      .then(res => objList = res)
+      .then(res => render(res))
+      .then(res => console.log(res))
+      .catch(error => console.error(error));
+  } else {
+    fetch('http://195.50.2.67:2403/a-khabibulin')
+      .then(res => res.json())
+      .then(res => objList = res)
+      .then(res => render(res))
+      .then(res => console.log(res))
+      .catch(error => console.error(error));
+  };
+};
+
+// MAKE TABLE AND ADDING NEW OBJECT
+function render(data) {
+  const header = Object.keys(data[0]);
+  const table = document.createElement("table");
+  table.classList = "table table-striped table-light"; // table.classList.add('table table-dark') why?!
+  let tr = table.insertRow(-1);
+  for (let i = 0; i < header.length; i++) {
+    const th = document.createElement("th");
+    th.innerHTML = header[i];
+    tr.appendChild(th);
+  }
+  for (let i = 0; i < data.length; i++) {
+    tr = table.insertRow(-1);
+    for (let j = 0; j < header.length; j++) {
+      let tabCell = tr.insertCell(-1);
+      tabCell.innerHTML = data[i][header[j]];
+    }
+  }
+  const divContainer = document.getElementById("showData");
+  divContainer.innerHTML = "";
+  divContainer.appendChild(table);
 };
 
 // LOAD OBJECT TO SELECT OPTION
@@ -121,32 +157,4 @@ function loadForm() {
   }
 };
 
-// TABLE MAKE AND ADDING NEW OBJECT
-function render() {
-  fetch('http://195.50.2.67:2403/a-khabibulin')
-    .then(response => response.json())
-    .then(data => {
-      objList = data;
-      const header = Object.keys(data[0]);
-      const table = document.createElement("table");
-      table.classList = "table table-striped table-dark"; // table.classList.add('table table-dark') why?!
-      let tr = table.insertRow(-1);
-      for (let i = 0; i < header.length; i++) {
-        const th = document.createElement("th");
-        th.innerHTML = header[i];
-        tr.appendChild(th);
-      }
-      for (let i = 0; i < data.length; i++) {
-        tr = table.insertRow(-1);
-        for (let j = 0; j < header.length; j++) {
-          let tabCell = tr.insertCell(-1);
-          tabCell.innerHTML = data[i][header[j]];
-        }
-      }
-      const divContainer = document.getElementById("showData");
-      divContainer.innerHTML = "";
-      divContainer.appendChild(table);
-    })
-    .catch(error => console.error(error))
-};
 

@@ -18,10 +18,12 @@
     <script src="./index.js" defer></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css">
     <title>Simple CRUD JS</title>
 </head>
 
-<body style="height: 100%">
+<body style="height: 100%; background-size:50%" background="./autumn.jpg">
+    <p class="h1 text-center" style="margin-top: 2%">JavaScript CRUD operations example</p>
     <div id="group">
         <div class="container h-100" style="padding-top: 2%">
             <div class="collapse" id="collapseCreate" data-parent="#group">
@@ -105,23 +107,23 @@
 
             <div class="row h-20 justify-content-center align-content-center">
 
-                <button type="button" class="btn btn-primary mr-1" data-toggle="collapse" id="createButton"
+                <button type="button" class="btn btn-light mr-1" data-toggle="collapse" id="createButton"
                     data-target="#collapseCreate" aria-expanded="false">
                     Create
                 </button>
 
-                <button type="button" class="btn btn-success mr-1" data-toggle="collapse" id="updateButton"
+                <button type="button" class="btn btn-light mr-1" data-toggle="collapse" id="updateButton"
                     data-target="#collapseUpdate" aria-expanded="false"> 
                     Update
                 </button>
 
-                <button type="button" class="btn btn-danger mr-1" data-toggle="collapse" id="deleteButton"
+                <button type="button" class="btn btn-light mr-1" data-toggle="collapse" id="deleteButton"
                     data-target="#collapseDelete" aria-expanded="false">
                     Delete
                 </button>
 
             </div>
-            <p class="h1 text-center" style="margin-top: 2%">Action read</p>
+            <p class="h1 text-center" style="margin-top: 5%">Action read</p>
             <div class="row h-70 justify-content-center align-content-center" style="margin-top:2%">
                 <div id="showData"></div>
             </div>

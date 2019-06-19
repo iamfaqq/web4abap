@@ -1,0 +1,15 @@
+html {
+    opacity: 0.85;
+}
+
+table{
+    opacity: 0.7;
+}
+
+.btn{
+    opacity: 0.8;
+}
+
+select>option {
+    opacity: 0.50;
+}
