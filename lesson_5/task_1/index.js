@@ -23,8 +23,8 @@ const formToJSON = elements => [].reduce.call(elements, (data, element) => {
 
 // SEND JSON OBJECT TO SERVER
 const handleFormSubmit = event => {
-  event.preventDefault(); // event ?
-  let data = formToJSON(form.elements); // form?
+  event.preventDefault();
+  let data = formToJSON(form.elements);
   data = JSON.stringify(data);
   if (form.elements.submit.textContent == 'Create') {
     fetchin(data, 'create');
@@ -62,7 +62,19 @@ const confirmButton = document.getElementById('confirmDelete');
 delButton.addEventListener('click', del => loadObject(delSelect));
 confirmButton.addEventListener('click', del => fetchin('', 'delete'));
 
+
 /************ FUNCTION *************/
+
+function UpdateObjectList() {
+  fetch('http://195.50.2.67:2403/a-khabibulin')
+    .then(res => {
+      if (res.status == 200) {
+        return res.json()
+          .then(res => { objList = res; return objList })
+      }
+    })
+  return objList;
+}
 
 // GET DATA FROM SERVER
 function fetchin(data, action) {
@@ -76,7 +88,8 @@ function fetchin(data, action) {
     url = url.concat('/' + delSelect.selectedOptions[0].value);
     method = 'DELETE'
   };
-  // GETTING DATA, WHEN READ WITHOUT BODY
+
+  // GETTING DATA WITH BODY, WHEN READ WITHOUT BODY, WHEN DELETE DELETE OBJECT FROM TABLE AND RELOAD OBJLIST
   if (action !== 'read') {
     fetch(url, {
       method: method, // PUT not work
@@ -86,41 +99,96 @@ function fetchin(data, action) {
       },
       body: data
     })
-      .then(res => res.json())
+      .then(res => {
+        if (res.status == 200) {
+          if (action != 'delete') {
+            return res.json()
+              .then(res => { object = res, render(object), UpdateObjectList() })
+          } else {
+            obj = findObject(delSelect.selectedOptions[0].value);
+            sameObject(obj);
+            objList = UpdateObjectList();
+            delSelect.remove(delSelect.selectedIndex);
+          }
+        }
+        else { return res.json() }
+      })
       .then(res => console.log(res))
-      .then(res => object = res)
       .catch(error => console.error(error));
   } else {
     fetch('http://195.50.2.67:2403/a-khabibulin')
-      .then(res => res.json())
-      .then(res => objList = res)
-      .then(res => render(res))
+      .then(res => {
+        if (res.status == 200) {
+          return res.json()
+            .then(res => { if (typeof res !== 'undefined' && res.length > 0) { objList = res, render(objList) } })
+        }
+      })
       .then(res => console.log(res))
       .catch(error => console.error(error));
   };
 };
 
-// MAKE TABLE AND ADDING NEW OBJECT
-function render(data) {
-  const header = Object.keys(data[0]);
-  const table = document.createElement("table");
-  table.classList = "table table-striped table-light"; // table.classList.add('table table-dark') why?!
-  let tr = table.insertRow(-1);
-  for (let i = 0; i < header.length; i++) {
-    const th = document.createElement("th");
-    th.innerHTML = header[i];
-    tr.appendChild(th);
-  }
-  for (let i = 0; i < data.length; i++) {
-    tr = table.insertRow(-1);
-    for (let j = 0; j < header.length; j++) {
-      let tabCell = tr.insertCell(-1);
-      tabCell.innerHTML = data[i][header[j]];
+const sameObject = object => {
+  let table = document.getElementsByTagName('table')[0];
+  let delArea = document.getElementById('collapseDelete');
+  for (let i = 0; i < table.rows.length; i++) {
+    if (table.rows[i].textContent.indexOf(object.id) !== -1 && delArea.classList.value == 'collapse show') {
+      table.deleteRow(i);
+      return true;
+    } else if (table.rows[i].textContent.indexOf(object.id) !== -1 && form.elements.submit.textContent == 'Update') {
+      for (j = 0; j < Object.keys(object).length; j++) {
+        table.rows[i].cells[j].innerHTML = Object.values(object)[j]
+      }
+      return true
     }
   }
-  const divContainer = document.getElementById("showData");
-  divContainer.innerHTML = "";
-  divContainer.appendChild(table);
+}
+
+// MAKE TABLE, ADDING UPDATE DELETE AN OBJECT
+function render(data) {
+  let header;
+  if (Array.isArray(data)) {
+    header = Object.keys(data[0]);
+  } else {
+    header = Object.keys(data);
+  }
+  if (!document.getElementsByTagName('table')[0]) {
+    const table = document.createElement("table");
+    table.classList = "table table-striped table-light"; // table.classList.add('table table-dark') why?!
+    let tr = table.insertRow(-1);
+    for (let i = 0; i < header.length; i++) {
+      const th = document.createElement("th");
+      th.innerHTML = header[i];
+      tr.appendChild(th);
+    }
+    if (Array.isArray(data)) {
+      for (let i = 0; i < data.length; i++) {
+        tr = table.insertRow(-1);
+        for (let j = 0; j < header.length; j++) {
+          let tabCell = tr.insertCell(-1);
+          tabCell.innerHTML = data[i][header[j]];
+        }
+      }
+    } else {
+      tr = table.insertRow(-1);
+      for (let i = 0; i < header.length; i++) {
+        let tabCell = tr.insertCell(-1);
+        tabCell.innerHTML = Object.values(data)[i];
+      }
+    }
+    const divContainer = document.getElementById("showData");
+    divContainer.innerHTML = "";
+    divContainer.appendChild(table);
+  } else {
+    table = document.getElementsByTagName('table')[0];
+    let tr = table.insertRow(-1);
+    if (!sameObject(data)) {
+      for (let i = 0; i < Object.keys(data).length; i++) {
+        let tabCell = tr.insertCell(-1);
+        tabCell.innerHTML = Object.values(data)[i];
+      }
+    }
+  }
   return data;
 };
 
@@ -137,13 +205,18 @@ function loadObject(select) {
       select.appendChild(opt);
     }
   }
-};
+}
 
-// LOAD OBJECT FROM SELECTED OPTION TO FORM
+const findObject = id => {
+  let obj = objList.find(obj => { return obj.id === id })
+  return obj
+}
+
+// LOAD SELECTED OBJECT TO FORM
 function loadForm() {
-  let obj = objList.find(obj => {
-    return obj.id === updSelect.selectedOptions[0].value
-  })
+
+  obj = findObject(updSelect.selectedOptions[0].value)
+
   if (obj !== undefined) {
     form.elements.username.value = obj.username;
     form.elements.lastname.value = obj.lastname;
