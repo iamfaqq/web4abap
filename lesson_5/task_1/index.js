@@ -108,6 +108,7 @@ function fetchin(data, action) {
             obj = findObject(delSelect.selectedOptions[0].value);
             sameObject(obj);
             objList = UpdateObjectList();
+            updSelect.remove(delSelect.selectedIndex);
             delSelect.remove(delSelect.selectedIndex);
           }
         }
@@ -194,6 +195,7 @@ function render(data) {
 
 // LOAD OBJECT TO SELECT OPTION
 function loadObject(select) {
+  updSelect.selectedIndex = 0;
   collapseForm.classList = "collapse";
   for (let i = 0; i < objList.length; i++) {
     const opt = document.createElement("option");
