@@ -66,11 +66,11 @@ function fetchin(data, action) {
   let url = '';
   let method = 'POST';
   if (action == 'create') {
-    url = 'http://195.50.2.67:2403/a-khabibulin';  
+    url = 'SOME URL INSERT HERE';  
   } else if (action == 'update') {
-    url = url.concat('http://195.50.2.67:2403/a-khabibulin' + '/' + updSelect.selectedOptions[0].value);
+    url = url.concat('SOME URL INSERT HERE' + '/' + updSelect.selectedOptions[0].value);
   } else if(action == 'delete'){
-    url = url.concat('http://195.50.2.67:2403/a-khabibulin' + '/' + delSelect.selectedOptions[0].value);
+    url = url.concat('SOME URL INSERT HERE' + '/' + delSelect.selectedOptions[0].value);
     method = 'DELETE'
   };
   fetch(url, {
@@ -123,7 +123,7 @@ function loadForm() {
 
 // TABLE MAKE AND ADDING NEW OBJECT
 function render() {
-  fetch('http://195.50.2.67:2403/a-khabibulin')
+  fetch('SOME URL INSERT HERE')
     .then(response => response.json())
     .then(data => {
       objList = data;
