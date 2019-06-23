@@ -66,7 +66,7 @@ confirmButton.addEventListener('click', del => fetchin('', 'delete'));
 /************ FUNCTION *************/
 
 function UpdateObjectList() {
-  fetch('http://195.50.2.67:2403/a-khabibulin')
+  fetch('SOME URL INSERT HERE')
     .then(res => {
       if (res.status == 200) {
         return res.json()
@@ -78,7 +78,7 @@ function UpdateObjectList() {
 
 // GET DATA FROM SERVER
 function fetchin(data, action) {
-  let url = 'http://195.50.2.67:2403/a-khabibulin';
+  let url = 'SOME URL INSERT HERE';
   let method = 'POST';
 
   // MAKE URL WHEN UPDATE OR DELETE
@@ -117,7 +117,7 @@ function fetchin(data, action) {
       .then(res => console.log(res))
       .catch(error => console.error(error));
   } else {
-    fetch('http://195.50.2.67:2403/a-khabibulin')
+    fetch('SOME URL INSERT HERE')
       .then(res => {
         if (res.status == 200) {
           return res.json()

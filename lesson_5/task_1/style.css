@@ -1,5 +1,6 @@
 html {
     opacity: 0.85;
+    overflow-y: hidden;
 }
 
 table{
